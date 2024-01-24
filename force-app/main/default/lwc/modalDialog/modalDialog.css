@@ -1,0 +1,22 @@
+.wide-modal {
+    max-width: 60em !important;
+    width: 60% !important; 
+}
+
+.x-wide-modal {
+    max-width: 80em !important;
+    width: 80% !important; 
+}
+
+.fullscreen-modal {
+    max-width: 95% !important; 
+    width: 90% !important;
+}
+
+.inner-section, .inner-cover {
+    position: absolute;
+}
+
+c-focus-trap.inner-component{
+    display: contents;
+}

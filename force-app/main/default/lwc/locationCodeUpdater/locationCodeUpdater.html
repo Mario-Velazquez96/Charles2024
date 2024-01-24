@@ -1,0 +1,66 @@
+<template>
+    <lightning-card title="Location Code Updater" >
+        <lightning-spinner if:true={loading}></lightning-spinner>
+        <lightning-layout class="slds-p-around_medium" multiple-rows="true">
+            <template if:true={showInputFile}>
+                <lightning-layout-item size="6">
+                    <c-csv-reader 
+                        label="Upload CSV File"
+                        onfileloaded={handleFileLoaded}>
+                    </c-csv-reader>
+                </lightning-layout-item>
+                <lightning-layout-item size="6">
+                    <div class="columns-title">
+                        *Columns required
+                        <ul class="slds-list_dotted columns-required">
+                            <li>lc_Name</li>
+                            <li>Schools::ad_3City</li>
+                            <li>Schools::ad_3State</li>
+                            <li>Schools::ad_3Zip</li>
+                            <li>Locations::lc_ActiveCalc</li>
+                            <li>Index_LocCode</li>
+                            <li>lc_ActiveCalc</li>
+                        </ul>
+                    </div>
+                </lightning-layout-item>
+                </template>        
+            <lightning-layout-item size="12">
+                <template if:true={recordsToUpdate} >
+                    <div class="slds-var-p-around_small" style="height: 400px;">
+                        <c-sortable-data-table 
+                            hide-checkbox-column
+                            key-field="Name"
+                            table-data={csvRecords}
+                            columns={csvColumns}
+                            default-sorted-by="Name"
+                            default-sorted-direction="desc">
+                        </c-sortable-data-table>
+                    </div>
+                </template>
+                <template if:true={recordsWereUpdated}>
+                    <div class="slds-var-p-around_small" style="height: 400px;">
+                        <c-sortable-data-table 
+                            hide-checkbox-column
+                            key-field="Name"
+                            table-data={recordsUpdated}
+                            columns={updatedColumns}
+                            default-sorted-by="Name"
+                            default-sorted-direction="desc">
+                        </c-sortable-data-table>
+                    </div>
+                </template>
+            </lightning-layout-item>
+            <lightning-layout-item size="12">
+                <template if:true={isCancel}>
+                    <lightning-button class="slds-p-around_xx-small" label="Cancel" variant="neutral" onclick={handleReset}></lightning-button>
+                </template>
+                <template if:true={readyToUpdate}>
+                    <lightning-button class="slds-p-around_xx-small" label="Update Records" variant="brand" onclick={handleUpdate} ></lightning-button>
+                </template>
+                <template if:true={isReset}>
+                    <lightning-button class="slds-p-around_xx-small" label="Reset" variant="brand" onclick={handleReset} ></lightning-button>
+                </template>
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-card>
+</template>

@@ -1,0 +1,37 @@
+<template>
+    <template if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </template>
+    
+    <lightning-card title="Account notes search">
+        <div>
+            <lightning-layout horizontal-align="stretch" multiple-rows="true">
+                <template if:true={showCustomLookup}>   
+                    <lightning-layout-item size="12">
+                        <c-notes-searcher-lookup obj-name="Account" search-placeholder="Search Accounts" icon-name="standard:account" onaccountsearch={searchNotes} onremoveaccount={accountRemoved}> </c-notes-searcher-lookup>
+                    </lightning-layout-item>
+                </template>
+                
+                <template if:false={showCustomLookup}>
+                    <lightning-layout-item size="12">
+                        <div id="lookup-pill" class="slds-pill-container">
+                            <lightning-pill class="pillSize" label={name} name={name} onremove={handleRemovePill} href={href}>
+                                <lightning-icon icon-name="standard:account" alternative-text="acc" ></lightning-icon>
+                            </lightning-pill>
+                        </div>
+                    </lightning-layout-item>
+                </template>
+
+                <lightning-layout-item size="12">
+                    <div class="table-container">
+                        <template if:true={showDataTable}>
+                            <c-notes-searcher-data-table notes-list={notesList} ondownload={downloadPDF} > </c-notes-searcher-data-table>
+                            <!-- <c-create-p-d-f files={notesList}></c-create-p-d-f> -->
+                        </template> 
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+    </lightning-card>
+    
+</template>

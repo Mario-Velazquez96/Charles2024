@@ -1,0 +1,358 @@
+<template>
+  <lightning-card>
+    <lightning-layout multiple-rows="true">
+      <lightning-layout-item size="8"
+        ><c-user-call-look-up
+          obj-name="User"
+          search-placeholder="Search Users"
+          icon-name="standard:user"
+          onrecordsearch={searchCalls}
+          onrecordremove={cleanCalls}
+        >
+        </c-user-call-look-up>
+      </lightning-layout-item>
+      <template if:true={showSummary}>
+        <lightning-layout-item size="12" class="slds-p-around_small">
+          <div class="card-container">
+            <lightning-card title="Summary" icon-name="standard:metrics">
+              <lightning-layout multiple-rows="true">
+                <lightning-layout-item size="3" class="slds-p-around_small">
+                  <c-metric-container
+                    label="Call amount"
+                    description="Date range selected"
+                    value={callTotalAmount}
+                  ></c-metric-container>
+                </lightning-layout-item>
+                <lightning-layout-item size="3" class="slds-p-around_small">
+                  <c-metric-container
+                    label="Email amount"
+                    description="Date range selected"
+                    value={emailTotalAmount}
+                  ></c-metric-container>
+                </lightning-layout-item>
+                <lightning-layout-item size="3" class="slds-p-around_small">
+                  <c-metric-container
+                    label="Calls this week"
+                    description="This week"
+                    value={callDetailThisWeekSize}
+                  ></c-metric-container>
+                </lightning-layout-item>
+                <lightning-layout-item size="3" class="slds-p-around_small">
+                  <c-metric-container
+                    label="Calls last week"
+                    description="Last week"
+                    value={callDetailsLastWeekSize}
+                  ></c-metric-container>
+                </lightning-layout-item>
+                <lightning-layout-item size="3" class="slds-p-around_small">
+                  <c-metric-container
+                    label="Calls this month"
+                    description="This Month"
+                    value={callDetailsThisMonthSize}
+                  ></c-metric-container>
+                </lightning-layout-item>
+                <lightning-layout-item size="3" class="slds-p-around_small">
+                  <c-metric-container
+                    label="Calls last month"
+                    description="Last Month"
+                    value={callDetailsLastMonthSize}
+                  ></c-metric-container>
+                </lightning-layout-item>
+                <lightning-layout-item size="3" class="slds-p-around_small">
+                  <c-metric-container
+                    label="Emails this week"
+                    description="This week"
+                    value={emailDetailThisWeekSize}
+                  ></c-metric-container>
+                </lightning-layout-item>
+                <lightning-layout-item size="3" class="slds-p-around_small">
+                  <c-metric-container
+                    label="Emails last week"
+                    description="Last week"
+                    value={emailDetailsLastWeekSize}
+                  ></c-metric-container>
+                </lightning-layout-item>
+                <lightning-layout-item size="3" class="slds-p-around_small">
+                  <c-metric-container
+                    label="Emails this month"
+                    description="This Month"
+                    value={emailDetailsThisMonthSize}
+                  ></c-metric-container>
+                </lightning-layout-item>
+                <lightning-layout-item size="3" class="slds-p-around_small">
+                  <c-metric-container
+                    label="Emails last month"
+                    description="Last Month"
+                    value={emailDetailsLastMonthSize}
+                  ></c-metric-container>
+                </lightning-layout-item>
+                <lightning-layout-item size="3" class="slds-p-around_small">
+                  <c-metric-container
+                    label="Meetings amount"
+                    description="Date range selected"
+                    value={meetingsDetailsDateRangeSize}
+                  ></c-metric-container>
+                </lightning-layout-item>
+                <lightning-layout-item size="3" class="slds-p-around_small">
+                  <c-metric-container
+                    label="Scheduled meetings by self"
+                    description="Date range selected"
+                    value={meetingsScheduledBySelf}
+                  ></c-metric-container>
+                </lightning-layout-item>
+                <lightning-layout-item size="3" class="slds-p-around_small">
+                  <c-metric-container
+                    label-font-size=".8rem"
+                    label="Scheduled meetings by others"
+                    description="Date range selected"
+                    value={meetingsScheduledByOthers}
+                  ></c-metric-container>
+                </lightning-layout-item>
+                <lightning-layout-item size="3" class="slds-p-around_small">
+                  <c-metric-container
+                    label="Number of days calling"
+                    description="Date range selected"
+                    value={numberOfDaysCalling}
+                  ></c-metric-container>
+                </lightning-layout-item>
+              </lightning-layout>
+            </lightning-card>
+          </div>
+        </lightning-layout-item>
+
+        <lightning-layout-item
+          size="6"
+          class="slds-p-horizontal_small slds-p-bottom_small"
+        >
+          <div class="card-container">
+            <lightning-card title="Call Markets" icon-name="standard:metrics">
+              <lightning-layout
+                multiple-rows="true"
+                class={layoutCallMarketClass}
+              >
+                <template lwc:if={isThereCallMarkets}>
+                  <template for:each={callMarketData} for:item="market">
+                    <lightning-layout-item
+                      key={market.key}
+                      size="4"
+                      class="slds-p-around_small"
+                    >
+                      <c-metric-container
+                        label={market.key}
+                        description=" "
+                        value={market.value}
+                      ></c-metric-container>
+                    </lightning-layout-item>
+                  </template>
+                </template>
+                <template lwc:elseif={isThereNoCallMarkets}>
+                  <lightning-layout-item size="12" class="slds-p-around_small">
+                    <p>No call markets found</p>
+                  </lightning-layout-item>
+                </template>
+              </lightning-layout>
+            </lightning-card>
+          </div>
+        </lightning-layout-item>
+
+        <lightning-layout-item
+          size="6"
+          class="slds-p-horizontal_small slds-p-bottom_small"
+        >
+          <div class="card-container">
+            <lightning-card title="Email Markets" icon-name="standard:metrics">
+              <lightning-layout
+                multiple-rows="true"
+                class={layoutEmailMarketClass}
+              >
+                <template lwc:if={isThereEmailMarkets}>
+                  <template for:each={emailMarketData} for:item="market">
+                    <lightning-layout-item
+                      key={market.key}
+                      size="4"
+                      class="slds-p-around_small"
+                    >
+                      <c-metric-container
+                        label={market.key}
+                        description=" "
+                        value={market.value}
+                      ></c-metric-container>
+                    </lightning-layout-item>
+                  </template>
+                </template>
+                <template lwc:elseif={isThereNoEmailMarkets}>
+                  <lightning-layout-item size="12" class="slds-p-around_small">
+                    <p>No email markets found</p>
+                  </lightning-layout-item>
+                </template>
+              </lightning-layout>
+            </lightning-card>
+          </div>
+        </lightning-layout-item>
+
+        <lightning-layout-item
+          size="6"
+          class="slds-p-horizontal_small slds-p-bottom_small"
+        >
+          <div class="card-container">
+            <lightning-card title="Call Titles" icon-name="standard:metrics">
+              <lightning-layout
+                multiple-rows="true"
+                class={layoutCallTitleClass}
+              >
+                <template lwc:if={isThereCallTitles}>
+                  <template for:each={callTitleData} for:item="title">
+                    <lightning-layout-item
+                      key={title.key}
+                      size="4"
+                      class="slds-p-around_small"
+                    >
+                      <c-metric-container
+                        label={title.key}
+                        description=" "
+                        value={title.value}
+                      ></c-metric-container>
+                    </lightning-layout-item>
+                  </template>
+                </template>
+                <template lwc:elseif={isThereNoCallTitles}>
+                  <lightning-layout-item size="12" class="slds-p-around_small">
+                    <p>No call titles found</p>
+                  </lightning-layout-item>
+                </template>
+              </lightning-layout>
+            </lightning-card>
+          </div>
+        </lightning-layout-item>
+
+        <lightning-layout-item
+          size="6"
+          class="slds-p-horizontal_small slds-p-bottom_small"
+        >
+          <div class="card-container">
+            <lightning-card title="Email Titles" icon-name="standard:metrics">
+              <lightning-layout
+                multiple-rows="true"
+                class={layoutEmailTitleClass}
+              >
+                <template lwc:if={isThereEmailTitles}>
+                  <template for:each={emailTitleData} for:item="title">
+                    <lightning-layout-item
+                      key={title.key}
+                      size="4"
+                      class="slds-p-around_small"
+                    >
+                      <c-metric-container
+                        label={title.key}
+                        description=" "
+                        value={title.value}
+                      ></c-metric-container>
+                    </lightning-layout-item>
+                  </template>
+                </template>
+                <template lwc:elseif={isThereNoEmailTitles}>
+                  <lightning-layout-item size="12" class="slds-p-around_small">
+                    <p>No email titles found</p>
+                  </lightning-layout-item>
+                </template>
+              </lightning-layout>
+            </lightning-card>
+          </div>
+        </lightning-layout-item>
+
+        <lightning-layout-item
+          size="12"
+          class="slds-p-horizontal_small slds-p-bottom_small"
+        >
+          <div class="card-container">
+            <lightning-card title="Details" icon-name="standard:metrics">
+              <lightning-layout multiple-rows="true">
+                <lightning-layout-item size="12" class="slds-p-around_small">
+                  <c-avonni-summary-detail>
+                    <h3
+                      slot="title"
+                      class="slds-text-heading_small slds-truncate slds-p-right_small"
+                      title="summary title"
+                    >
+                      Calls Details
+                    </h3>
+                    <template lwc:if={isThereCalls}>
+                      <div class={layoutCallClass}>
+                        <c-user-call-data-table
+                          record-list={callDetailsDateRange}
+                          columns={taskColumns}
+                          sorted-by="CreatedDate"
+                          sort-direction="desc"
+                        >
+                        </c-user-call-data-table>
+                      </div>
+                    </template>
+                    <template lwc:elseif={isThereNoCalls}>
+                      <p>No calls found</p>
+                    </template>
+                  </c-avonni-summary-detail>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" class="slds-p-around_small">
+                  <c-avonni-summary-detail>
+                    <h3
+                      slot="title"
+                      class="slds-text-heading_small slds-truncate slds-p-right_small"
+                      title="summary title"
+                    >
+                      Email Details
+                    </h3>
+                    <template lwc:if={isThereEmails}>
+                      <div class={layoutEmailClass}>
+                        <c-user-call-data-table
+                          record-list={emailDetailsDateRange}
+                          columns={emailColumns}
+                          sorted-by="CreatedDate"
+                          sort-direction="desc"
+                        >
+                        </c-user-call-data-table>
+                      </div>
+                    </template>
+                    <template lwc:elseif={isThereNoEmails}>
+                      <p>No Emails found</p>
+                    </template>
+                  </c-avonni-summary-detail>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" class="slds-p-around_small">
+                  <c-avonni-summary-detail>
+                    <h3
+                      slot="title"
+                      class="slds-text-heading_small slds-truncate slds-p-right_small"
+                      title="summary title"
+                    >
+                      Meetings Details
+                    </h3>
+                    <template lwc:if={isThereMeetings}>
+                      <div class={layoutMeetingClass}>
+                        <c-user-call-data-table
+                          record-list={meetingsDetailsDateRange}
+                          columns={meetingColumns}
+                          sorted-by="CreatedDate"
+                          sort-direction="desc"
+                        >
+                        </c-user-call-data-table>
+                      </div>
+                    </template>
+                    <template lwc:elseif={isThereNoMeetings}>
+                      <p>No meetings found</p>
+                    </template>
+                  </c-avonni-summary-detail>
+                </lightning-layout-item>
+              </lightning-layout>
+            </lightning-card>
+          </div>
+        </lightning-layout-item>
+      </template>
+    </lightning-layout>
+  </lightning-card>
+  <template if:true={loading}>
+    <lightning-spinner
+      alternative-text="Loading"
+      size="large"
+    ></lightning-spinner>
+  </template>
+</template>

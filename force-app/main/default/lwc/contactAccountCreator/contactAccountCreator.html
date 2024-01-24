@@ -1,0 +1,92 @@
+<template>
+    <lightning-card title="Create Contacts" >
+        <lightning-spinner if:true={loading}></lightning-spinner>
+        <div class="slds-p-around_medium">
+            <lightning-layout multiple-rows="true">
+                <lightning-layout-item padding="around-small" size="6">
+                    <div class="label-container">
+                        <lightning-input type="file"
+                             label="CSV file"
+                             multiple="false"
+                             accept=".csv"
+                             onchange={handleInputChange}></lightning-input>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item padding="around-small" size="6">
+                    <div class="columns-title">
+                        *Columns required
+                        <ul class="slds-list_dotted columns-required">
+                            <li>Email</li>
+                            <li>FirstName</li>
+                            <li>LastName</li>
+                            <li>Organization</li>
+                        </ul>
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+            <!-- <div>
+                <lightning-input type="file"
+                             label="CSV file (please make sure the column email for contact is labeled “Email”)"
+                             multiple="false"
+                             accept=".csv"
+                             onchange={handleInputChange}></lightning-input>
+            </div>
+            <div>
+                <ul>*Columns required
+                    <li>Email</li>
+                    <li>FirstName</li>
+                    <li>LastName</li>
+                    <li>Organization</li>
+                </ul>
+            </div> -->
+        </div>
+        <template if:true={contactsToCreate.length}>
+            <div class="slds-p-around_medium">
+                <div class="slds-var-p-around_small" style="height: 400px;">
+                    <lightning-datatable key-field="key"
+                                        hide-checkbox-column
+                                        data={contactsToCreate}
+                                        columns={columns}></lightning-datatable>
+                </div>
+                <div class="slds-p-around_small slds-align_absolute-center">
+                    <lightning-button variant="neutral"
+                                      label="Cancel"
+                                      title="Cancel" onclick={cancel}
+                                      class="slds-m-left_x-small"></lightning-button>
+                    <lightning-button variant="brand"
+                                      label="Create Records"
+                                      title="Create" onclick={create}
+                                      class="slds-m-left_x-small"></lightning-button>
+                </div>
+            </div>
+        </template>
+        <template if:true={showMessageError}>
+            <div class="slds-p-around_medium">
+                <p class="error-message">{messageError}</p>
+            </div>
+        </template>
+
+        <!-- Table to display records created -->
+        <template if:true={recordsCreated.length}>
+            <div class="slds-p-around_medium">
+                <div class="slds-var-p-around_small" style="height: 400px;">
+                    <lightning-datatable key-field="key"
+                                        hide-checkbox-column
+                                        data={recordsCreated}
+                                        columns={recordsCreatedColumns}></lightning-datatable>
+                </div>
+                <div class="slds-p-around_small slds-align_absolute-center">
+                    <lightning-button variant="neutral"
+                                      label="Cancel"
+                                      title="Cancel" onclick={cancel}
+                                      class="slds-m-left_x-small"></lightning-button>
+                    <lightning-button variant="brand"
+                                      label="Download CSV"
+                                      title="Create" onclick={exportContactData}
+                                      class="slds-m-left_x-small"></lightning-button>
+                </div>
+            </div>
+        </template>
+        
+    </lightning-card>
+</template>

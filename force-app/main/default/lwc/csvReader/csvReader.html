@@ -1,0 +1,10 @@
+<template>
+    <lightning-spinner if:true={loading}></lightning-spinner>
+    <lightning-input 
+        type="file"
+        label={label}
+        multiple="false"
+        accept=".csv"
+        onchange={handleInputChange}>
+    </lightning-input>
+</template>

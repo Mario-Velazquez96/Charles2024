@@ -1,0 +1,15 @@
+<template>
+    <div
+      class="focus-trap-before"
+      style="position: absolute; opacity: 0"
+      tabindex="0"
+      onfocus={onFocus}
+    ></div>
+    <slot></slot>
+    <div
+      class="focus-trap-after"
+      style="position: absolute; opacity: 0"
+      tabindex="0"
+      onfocus={onFocus}
+    ></div>
+  </template>

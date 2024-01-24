@@ -1,0 +1,23 @@
+<template>
+    {error}
+    <lightning-datatable
+        key-field={keyField}
+        hide-checkbox-column={hideCheckboxColumn}
+        show-row-number-column={showRowNumberColumn}
+        data={sortedData}
+        columns={columns}
+        sorted-by={sortBy}
+        sorted-direction={sortDirection}
+        onsort={handleSort}
+        onrowselection={handleRowSelection}
+        onrowaction={handleRowAction}
+        selected-rows={selectedRows}>
+    </lightning-datatable>
+    <template if:true={showVierMore}>
+        <div class="slds-align_absolute-center slds-border_top">
+            <div class="showmore-button">
+                <a onclick={handleViewMore}><lightning-badge class="slds-badge_lightest" label="View More" icon-name="utility:down" icon-position="end"></lightning-badge></a>
+            </div>
+        </div>     
+    </template>
+</template>

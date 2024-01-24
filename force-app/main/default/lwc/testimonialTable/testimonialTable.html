@@ -1,0 +1,115 @@
+<template>
+  <lightning-card title="Testimonial Details">
+    <div class="slds-p-around_medium">
+      <template lwc:if={isLoading}>
+        <div class="slds-align_absolute-center" style="height: 5rem">
+          <lightning-spinner
+            alternative-text="Loading"
+            size="medium"
+          ></lightning-spinner>
+        </div>
+      </template>
+
+      <div style="display: inline-flex; align-items: flex-end">
+        <div class="slds-col slds-size_4-of-12 slds-p-right_small">
+          <lightning-input
+            type="date"
+            label="Start Date"
+            name="startDate"
+            value={startDate}
+            onchange={handleDateChange}
+          ></lightning-input>
+        </div>
+        <div class="slds-col slds-size_4-of-12 slds-p-right_small">
+          <lightning-input
+            type="date"
+            label="End Date"
+            name="endDate"
+            value={endDate}
+            onchange={handleDateChange}
+          ></lightning-input>
+        </div>
+        <div
+          class="slds-col slds-size_2-of-12 slds-p-right_small"
+          style="display: flex"
+        >
+          <div>
+            <lightning-button
+              label="Filter"
+              title="Filter"
+              onclick={handleFilter}
+              class="slds-m-left_x-small"
+            ></lightning-button>
+          </div>
+          <div>
+            <lightning-button-icon
+              icon-name="utility:refresh"
+              variant="border-filled"
+              alternative-text="Refresh"
+              title="Refresh"
+              onclick={handleRefresh}
+              class="slds-m-left_x-small"
+            >
+            </lightning-button-icon>
+          </div>
+        </div>
+      </div>
+
+      <template lwc:if={emptyTestimonials}>
+        <div class="slds-p-vertical_small">
+          <div class="slds-m-vertical_small">
+            <lightning-datatable
+              key-field="Id"
+              data={pageData}
+              columns={columns}
+              wrap-text-max-lines="15"
+              hide-checkbox-column
+            >
+            </lightning-datatable>
+          </div>
+          <div class="button-container">
+            <div class="slds-float_left">
+              <lightning-button-group>
+                <lightning-button
+                  label="&#x00AB;"
+                  onclick={first}
+                  disabled={disabledFirst}
+                ></lightning-button>
+                <lightning-button
+                  label="&lt;"
+                  onclick={previous}
+                  disabled={disabledPrevious}
+                ></lightning-button>
+                <lightning-button
+                  label="&gt;"
+                  onclick={next}
+                  disabled={disabledNext}
+                ></lightning-button>
+                <lightning-button
+                  label="&#x00BB;"
+                  onclick={last}
+                  disabled={disabledLast}
+                ></lightning-button>
+
+                <div class="text-container">
+                  Total Records: {totalRecords} Page ({page} of {totalPages})
+                </div>
+              </lightning-button-group>
+            </div>
+            <div class="slds-float_right">
+              <lightning-button
+                label="Download"
+                onclick={downloadCSVFile}
+              ></lightning-button>
+            </div>
+          </div>
+        </div>
+      </template>
+      <template lwc:else>
+        <div class="slds-col slds-size_4-of-12 slds-p-top_small">
+          Records not found
+        </div>
+      </template>
+    </div>
+  </lightning-card>
+</template>

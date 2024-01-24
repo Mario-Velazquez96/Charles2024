@@ -1,0 +1,33 @@
+<template>
+    <lightning-datatable
+            key-field="id"
+            columns={columns}
+            data={pageData}
+            hide-checkbox-column
+            default-sort-direction={defaultSortDirection}
+            sorted-direction={sortDirection}
+            sorted-by={sortedBy}
+            onsort={onHandleSort}
+            wrap-text-max-lines="3"
+            class="data-table">
+    </lightning-datatable>
+    <div class="button-container">
+        <div class="slds-float_left">
+            <lightning-button-group>
+                <lightning-button label="&#x00AB;" onclick={first} disabled={disabledFirst}></lightning-button>
+                <lightning-button label="&lt;" onclick={previous} disabled={disabledPrevious}></lightning-button>
+                <lightning-button label="&gt;" onclick={next} disabled={disabledNext}></lightning-button>
+                <lightning-button label="&#x00BB;" onclick={last} disabled={disabledLast}></lightning-button>
+            
+                <div class="text-container">
+                    Total Records: {totalRecords} Page ({page} of {totalPages})
+                </div>
+            </lightning-button-group>
+        </div>
+        <div class="slds-float_right">
+            <lightning-button label="Download" onclick={download} ></lightning-button>
+        </div>
+    </div>
+    
+    
+</template>
