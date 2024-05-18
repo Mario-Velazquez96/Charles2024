@@ -1,0 +1,55 @@
+<template>
+  <div class="slds-box slds-theme--default">
+    <lightning-dual-listbox
+      name="Users"
+      label="Select Users To export data for"
+      source-label="Available"
+      selected-label="Selected"
+      field-level-help="Select your preferred Users"
+      options={options}
+      onchange={handleChange}
+    ></lightning-dual-listbox>
+    <div>
+      <lightning-layout multiple-rows="true">
+        <lightning-layout-item size="4" class="slds-p-vertical_x-small">
+          <lightning-input
+            type="date"
+            label="Enter a start date"
+            value={startDate}
+            onchange={handleChangeStartValue}
+          ></lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item size="4" class="slds-p-around_x-small">
+          <lightning-input
+            type="date"
+            label="Enter an end date"
+            value={endDate}
+            onchange={handleChangeEndValue}
+          ></lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item
+          size="2"
+          class="slds-p-around_x-small"
+          style="align-self: end"
+        >
+          <div style="display: flex; justify-content: flex-end">
+            <lightning-button
+              variant="brand-outline"
+              label="Export"
+              title="Export"
+              onclick={handleExportClick}
+              disabled={isDisabled}
+              class="slds-m-top_x-small slds-align_absolute-center"
+            ></lightning-button>
+          </div>
+        </lightning-layout-item>
+      </lightning-layout>
+    </div>
+  </div>
+  <template if:true={loading}>
+    <lightning-spinner
+      alternative-text="Loading"
+      size="large"
+    ></lightning-spinner>
+  </template>
+</template>

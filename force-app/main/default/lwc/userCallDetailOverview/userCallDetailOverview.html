@@ -11,6 +11,26 @@
         >
         </c-user-call-look-up>
       </lightning-layout-item>
+
+      <lightning-layout-item size="4" style="align-self: end">
+        <div
+          if:true={showExportButton}
+          style="display: flex; justify-content: flex-end"
+          class="slds-p-bottom_x-small slds-p-right_small"
+        >
+          <c-user-call-export-excel
+            summary={summaryArray}
+            call-markets={callMarketData}
+            email-markets={emailMarketData}
+            call-titles={callTitleData}
+            email-titles={emailTitleData}
+            calls-details={callDetailsDateRange}
+            email-details={emailDetailsDateRange}
+            meetings-details={meetingsDetailsDateRange}
+          ></c-user-call-export-excel>
+        </div>
+      </lightning-layout-item>
+
       <template if:true={showSummary}>
         <lightning-layout-item size="12" class="slds-p-around_small">
           <div class="card-container">

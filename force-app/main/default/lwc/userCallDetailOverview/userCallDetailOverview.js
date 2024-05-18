@@ -72,6 +72,7 @@ export default class UserCallDetailOverview extends LightningElement {
   startDate;
   endDate;
   showSpinner;
+  showExportButton = false;
   showSummary = false;
   loading = false;
 
@@ -100,8 +101,11 @@ export default class UserCallDetailOverview extends LightningElement {
   meetingsScheduledBySelf = 0;
   meetingsScheduledByOthers = 0;
 
+  summaryArray = [];
+
   searchCalls(event) {
     this.loading = true;
+    this.showExportButton = false;
     this.recordId = event.detail.selectedId;
     this.startDate = event.detail.startDate;
     this.endDate = event.detail.endDate;
@@ -131,9 +135,9 @@ export default class UserCallDetailOverview extends LightningElement {
         this.prepareColumnsToMeetings();
         this.loading = false;
         this.showSummary = true;
-        console.log("callDetailsDateRange", this.callDetailsDateRange);
       })
-      .catch((error) => this.showToast("Error", error.body.message, "error"));
+      .catch((error) => this.showToast("Error", error.body.message, "error"))
+      .finally(() => (this.showExportButton = true));
   }
 
   prepareColumnsToCalls() {
@@ -249,11 +253,6 @@ export default class UserCallDetailOverview extends LightningElement {
       );
     }
     this.meetingsDetailsDateRange = meetingsDetails;
-
-    console.log(
-      "meetingsDetailsDateRangeColumns prepare",
-      this.meetingsDetailsDateRange
-    );
   }
 
   getSummaryData() {
@@ -266,6 +265,28 @@ export default class UserCallDetailOverview extends LightningElement {
     this.emailPerEachTitle = this.getEmailsPerEachTitle();
     this.meetingsScheduledBySelf = this.getMeetingsScheduledBySelf();
     this.meetingsScheduledByOthers = this.getMeetingsScheduledByOthers();
+
+    let tmpObject = {
+      "Call amount": this.callTotalAmount,
+      "Email amount": this.emailTotalAmount,
+      "Calls this week": this.callDetailsThisWeek.length,
+      "Calls last week": this.callDetailsLastWeek.length,
+      "Calls this month": this.callDetailsThisMonth.length,
+      "Calls last month": this.callDetailsLastMonth.length,
+      "Emails this week": this.emailDetailsThisWeek.length,
+      "Emails last week": this.emailDetailsLastWeek.length,
+      "Emails this month": this.emailDetailsThisMonth.length,
+      "Emails last month": this.emailDetailsLastMonth.length,
+      "Meetings amount": this.meetingsDetailsDateRange.length,
+      "Scheduled meetings by self": this.meetingsScheduledBySelf,
+      "Scheduled meetings by others": this.meetingsScheduledByOthers,
+      "Number of days calling": this.numberOfDaysCalling
+    };
+
+    this.summaryArray = Object.entries(tmpObject).map(([key, value]) => ({
+      key,
+      value
+    }));
   }
 
   //Get the number of days calling (not while traveling)
@@ -419,6 +440,8 @@ export default class UserCallDetailOverview extends LightningElement {
     this.emailPerEachTitle = {};
     this.meetingsScheduledBySelf = 0;
     this.meetingsScheduledByOthers = 0;
+    this.showExportButton = false;
+    this.summaryArray = [];
     this.loading = false;
   }
 

@@ -4,6 +4,10 @@
   border-style: solid;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
 }
+.button-container {
+  display: flex;
+  align-items: flex-end;
+}
 
 .datatable-container {
   height: 350px;

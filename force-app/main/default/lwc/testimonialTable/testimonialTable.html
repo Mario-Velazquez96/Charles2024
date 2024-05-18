@@ -11,7 +11,7 @@
       </template>
 
       <div style="display: inline-flex; align-items: flex-end">
-        <div class="slds-col slds-size_4-of-12 slds-p-right_small">
+        <div class="slds-col slds-size_3-of-12 slds-p-right_small">
           <lightning-input
             type="date"
             label="Start Date"
@@ -20,13 +20,22 @@
             onchange={handleDateChange}
           ></lightning-input>
         </div>
-        <div class="slds-col slds-size_4-of-12 slds-p-right_small">
+        <div class="slds-col slds-size_3-of-12 slds-p-right_small">
           <lightning-input
             type="date"
             label="End Date"
             name="endDate"
             value={endDate}
             onchange={handleDateChange}
+          ></lightning-input>
+        </div>
+        <div class="slds-col slds-size_3-of-12 slds-p-right_small">
+          <lightning-input
+            type="Text"
+            label="Testimonial Text"
+            name="testimonialText"
+            value={testimonialText}
+            onchange={handleTestimonialChange}
           ></lightning-input>
         </div>
         <div

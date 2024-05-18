@@ -22,7 +22,8 @@ public without sharing class TestimonialTableController {
   @AuraEnabled(cacheable=true)
   public static List<TestimonialWrapper> getFilterTestimonials(
     Date startDate,
-    Date endDate
+    Date endDate,
+    String testimonialText
   ) {
     List<Testimonial__c> testimonials = new List<Testimonial__c>();
     List<TestimonialWrapper> wrappedTestimonials = new List<TestimonialWrapper>();
@@ -45,6 +46,16 @@ public without sharing class TestimonialTableController {
       wrapper.TestimonialText = t.Testimonial_Text__c;
       wrapper.TestimonialDate = t.Testimonial_Date__c;
       wrappedTestimonials.add(wrapper);
+    }
+
+    if (testimonialText != null) {
+      List<TestimonialWrapper> filteredTestimonials = new List<TestimonialWrapper>();
+      for (TestimonialWrapper tw : wrappedTestimonials) {
+        if (tw.TestimonialText.containsIgnoreCase(testimonialText)) {
+          filteredTestimonials.add(tw);
+        }
+      }
+      return filteredTestimonials;
     }
     return wrappedTestimonials;
   }

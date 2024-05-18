@@ -1,0 +1,27 @@
+<template>
+  <div class="slds-box slds-theme--default">
+    Click on the link Below to Export data as xlsx.
+    <p class="slds-m-top--large">
+      <lightning-button
+        variant="brand"
+        label="Export Account data"
+        title="Export Account Data"
+        onclick={exportToXLSX}
+      ></lightning-button>
+    </p>
+  </div>
+  <div class="slds-box slds-theme--default">
+    <lightning-dual-listbox
+      name="languages"
+      label="Select Languages"
+      source-label="Available"
+      selected-label="Selected"
+      field-level-help="Select your preferred languages"
+      options={options}
+      onchange={handleChange}
+    ></lightning-dual-listbox>
+    <div class="slds-box">
+      <p>Selected values are: {selected}</p>
+    </div>
+  </div>
+</template>

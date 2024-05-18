@@ -37,6 +37,7 @@ export default class TestimonialTable extends LightningElement {
 
   startDate;
   endDate;
+  testimonialText;
 
   isLoading;
 
@@ -103,8 +104,16 @@ export default class TestimonialTable extends LightningElement {
     }
   }
 
+  handleTestimonialChange(event) {
+    this.testimonialText = event.target.value;
+  }
+
   handleFilter() {
-    getFilterTestimonials({ startDate: this.startDate, endDate: this.endDate })
+    getFilterTestimonials({
+      startDate: this.startDate,
+      endDate: this.endDate,
+      testimonialText: this.testimonialText
+    })
       .then((result) => {
         this.isLoading = true;
         this.refreshSettings();
@@ -123,6 +132,7 @@ export default class TestimonialTable extends LightningElement {
     this.isLoading = true;
     this.startDate = null;
     this.endDate = null;
+    this.testimonialText = null;
     this.refreshSettings();
     let temp = await getTestimonials();
     this.testimonials = temp.map((record) => ({

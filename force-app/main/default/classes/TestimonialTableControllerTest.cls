@@ -29,12 +29,14 @@ public class TestimonialTableControllerTest {
 
     Date startDate = Date.today().addDays(-9);
     Date endDate = Date.today();
+    String testimonialTxt = 'Testimonial';
 
     // Test getFilterTestimonials method
     Test.startTest();
     List<TestimonialTableController.TestimonialWrapper> results = TestimonialTableController.getFilterTestimonials(
       startDate,
-      endDate
+      endDate,
+      testimonialTxt
     );
     Test.stopTest();
 
